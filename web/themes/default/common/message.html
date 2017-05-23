@@ -1,0 +1,66 @@
+{template 'common/header-base'}
+<!--<div class="alert we7-page-alert media">
+	<a class="media-left media-middle">
+		<i class="wi text-{$label} wi-{if $label=='success'}right-sign{/if}{if $label=='danger'}warning-sign{/if}{if $label=='info'}info-sign{/if}{if $label=='warning'}error-sign{/if}"></i>
+	</a>
+	<div class="media-body">
+		{if is_array($msg)}
+			<h2>MYSQL 错误：</h2>
+			<p>{php echo cutstr($msg['sql'], 300, 1);}</p>
+			<p><b>{$msg['error'][0]} {$msg['error'][1]}：</b>{$msg['error'][2]}</p>
+		{else}
+			<h2>{$caption}</h2>
+			<p>{$msg}</p>
+		{/if}
+		{if $redirect}
+			<p><a href="{$redirect}">如果你的浏览器没有自动跳转，请点击此链接</a></p>
+			<script type="text/javascript">
+				setTimeout(function () {
+					location.href = "{$redirect}";
+				}, 3000);
+			</script>
+		{else}
+			<p>[<a href="javascript:history.go(-1);">点击这里返回上一页</a>] &nbsp; [<a href="./?refresh">首页</a>]</p>
+		{/if}
+	</div>
+</div>-->
+<script type="text/javascript">
+	function setCookie(cname,cvalue,exdays){
+		var d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		var expires = "expires="+d.toGMTString();
+		document.cookie = cname+"="+cvalue+"; "+expires;
+	}
+	//设置cookie
+	var modal = new Object();
+		{if is_array($msg)}
+			modal.title = 'MYSQL 错误';
+			modal.msg = '{php echo cutstr($msg['sql'], 300, 1);}';
+		{else}
+			modal.title = '{$caption}';
+			modal.msg = '<i class="wi text-{$label} wi-{if $label=='success'}right-sign{/if}{if $label=='danger'}warning-sign{/if}{if $label=='info'}info-sign{/if}{if $label=='warning'}error-sign{/if}"></i>{$msg}';
+		{/if}
+		{if $redirect}
+			modal.redirect = "{$redirect}";
+			
+		{else}
+			modal.redirect = "";
+		{/if}
+	setCookie("modal",JSON.stringify(modal),30000);
+	
+	//跳转
+	{if $redirect}
+		setTimeout(function(){
+			window.location.href= "{$redirect}"; 
+		},0)	
+	{else}
+		setTimeout(function(){
+			window.history.back(-1);
+		},0)
+	{/if}
+	
+</script>
+<div class="hidden">
+	<div>
+	{template 'common/footer-base'}
+</div>
