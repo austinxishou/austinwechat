@@ -1,7 +1,9 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 网页端框架函数加载和 相关配置初始化
  */
 load()->model('user');
 load()->func('tpl');
@@ -40,8 +42,10 @@ if(!empty($_GPC['__uniacid'])) {
 				$cache_lastaccount['account'] = $uniacid;
 				cache_write($cache_key, $cache_lastaccount);
 			}
-		} else {
+		} else if( !empty($cache_lastaccount) ){
 			$uniacid = $cache_lastaccount['account'];
+		}else{
+			$uniacid = array();
 		}
 	}
 	$_W['uniacid'] = $uniacid;

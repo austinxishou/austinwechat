@@ -85,7 +85,7 @@ function uni_fetch($uniacid = 0) {
 	return $account;
 }
 
-
+// 获取系统已安装模块
 function uni_modules($enabledOnly = true) {
 	global $_W;
 	$cachekey = "unimodules:{$_W['uniacid']}:{$enabledOnly}";
@@ -96,7 +96,7 @@ function uni_modules($enabledOnly = true) {
 	$owneruid = pdo_fetchcolumn("SELECT uid FROM ".tablename('uni_account_users')." WHERE uniacid = :uniacid AND role = 'owner'", array(':uniacid' => $_W['uniacid']));
 	load()->model('user');
 	$owner = user_single(array('uid' => $owneruid));
-		if (empty($owner)) {
+	if (empty($owner)) {
 		$groupid = '-1';
 	} else {
 		$groupid = $owner['groupid'];

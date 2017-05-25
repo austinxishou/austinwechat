@@ -48,7 +48,8 @@
 		</div>
 	</nav>
 </div>
-<?php  if(empty($_COOKIE['check_setmeal']) && !empty($_W['account']['endtime']) && ($_W['account']['endtime'] - TIMESTAMP < (6*86400))) { ?>
+<!-- austin modify 注释到期检测 -->
+<!-- <?php  if(empty($_COOKIE['check_setmeal']) && !empty($_W['account']['endtime']) && ($_W['account']['endtime'] - TIMESTAMP < (6*86400))) { ?>
 	<div class="upgrade-tips we7-body-alert" id="setmeal-tips">
 		<div class="alert-info text-center">
 			<a href="<?php  echo url('user/edit', array('uid' => $_W['account']['uid']));?>" target="_blank">
@@ -69,14 +70,19 @@
 			return false;
 		}
 	</script>
-<?php  } ?>
+<?php  } ?> -->
 <div class="main">
 	<div class="container">
-		<?php  if(in_array(FRAME, array('account', 'system', 'adviertisement')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
+
+	<?php  if(in_array(FRAME, array('account', 'system', 'adviertisement')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
+
 		<?php  if(!empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi')) || defined('IN_MODULE')) { ?>
-		<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
+			<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽">
+			<?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
 		<?php  } ?>
+
 		<div class="panel panel-content">
+
 			<div class="content-head panel-heading">
 				<?php  if(!empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi')) || defined('IN_MODULE')) { ?>
 					<a href="<?php  echo url('home/welcome/account')?>" class="we7-head-back"><i class="wi wi-back-circle"></i></a>
@@ -152,4 +158,4 @@
 					<?php  } } ?>
 				</div>
 				<div class="right-content">
-		<?php  } ?>
+	<?php  } ?>

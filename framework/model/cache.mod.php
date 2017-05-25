@@ -250,12 +250,12 @@ function cache_build_cloud_ad() {
 	cache_delete("cloud:ad:site:finance");
 }
 
-
+//读取系统内模块的参数
 function cache_build_uninstalled_module() {
 	load()->model('cloud');
 	load()->classs('cloudapi');
-	$cloud_api = new CloudApi();
-	$cloud_m_count = $cloud_api->get('site', 'stat', array('module_quantity' => 1), 'json');
+	// $cloud_api = new CloudApi();
+	// $cloud_m_count = $cloud_api->get('site', 'stat', array('module_quantity' => 1), 'json');
 	$all_module = pdo_getall('modules');
 	$installed_module = array();
 	if (!empty($all_module)) {
@@ -266,34 +266,36 @@ function cache_build_uninstalled_module() {
 	$uninstallModules = array('recycle' => array(), 'uninstalled' => array());
 	$recycle_modules = pdo_getall('modules_recycle', array(), array(), 'modulename');
 	$recycle_modules = array_keys($recycle_modules);
-	$cloud_module = cloud_m_query();
-	unset($cloud_module['pirate_apps']);
-	if (!empty($cloud_module) && !is_error($cloud_module)) {
-		foreach ($cloud_module as $module) {
-			if (!in_array($module['name'], $installed_module)) {
-				$status = in_array($module['name'], $recycle_modules) ? 'recycle' : 'uninstalled';
-				$wxapp_support = !empty($module['site_branch']['wxapp_support']) ? $module['site_branch']['wxapp_support'] : 1;
-				$app_support = !empty($module['site_branch']['app_support']) ? $module['site_branch']['app_support'] : 2;
-				if (!empty($module['id'])) {
-					$cloud_module_info = array (
-						'from' => 'cloud',
-						'name' => $module['name'],
-						'version' => $module['version'],
-						'title' => $module['title'],
-						'thumb' => $module['thumb'],
-						'wxapp_support' => $wxapp_support,
-						'app_support' => $app_support
-					);
-					if ($wxapp_support == 2) {
-						$uninstallModules[$status]['wxapp'][$module['name']] = $cloud_module_info;
-					}
-					if ($app_support == 2) {
-						$uninstallModules[$status]['app'][$module['name']] = $cloud_module_info;
-					}
-				}
-			}
-		}
-	}
+	// $cloud_module = cloud_m_query();
+	// unset($cloud_module['pirate_apps']);
+	// if (!empty($cloud_module) && !is_error($cloud_module)) {
+	// 	foreach ($cloud_module as $module) {
+	// 		if (!in_array($module['name'], $installed_module)) {
+	// 			$status = in_array($module['name'], $recycle_modules) ? 'recycle' : 'uninstalled';
+	// 			$wxapp_support = !empty($module['site_branch']['wxapp_support']) ? $module['site_branch']['wxapp_support'] : 1;
+	// 			$app_support = !empty($module['site_branch']['app_support']) ? $module['site_branch']['app_support'] : 2;
+	// 			if (!empty($module['id'])) {
+	// 				$cloud_module_info = array (
+	// 					'from' => 'cloud',
+	// 					'name' => $module['name'],
+	// 					'version' => $module['version'],
+	// 					'title' => $module['title'],
+	// 					'thumb' => $module['thumb'],
+	// 					'wxapp_support' => $wxapp_support,
+	// 					'app_support' => $app_support
+	// 				);
+	// 				if ($wxapp_support == 2) {
+	// 					$uninstallModules[$status]['wxapp'][$module['name']] = $cloud_module_info;
+	// 				}
+	// 				if ($app_support == 2) {
+	// 					$uninstallModules[$status]['app'][$module['name']] = $cloud_module_info;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	//读取本地模块目录
 	$path = IA_ROOT . '/addons/';
 	$module_file = glob($path . '*');
 	if (is_array($module_file) && !empty($module_file)) {
@@ -326,7 +328,8 @@ function cache_build_uninstalled_module() {
 			}
 		}
 		$cache = array(
-			'cloud_m_count' => $cloud_m_count['module_quantity'],
+			// 'cloud_m_count' => $cloud_m_count['module_quantity'],
+			'cloud_m_count' => 0,
 			'modules' => $uninstallModules,
 			'app_count' => count($uninstallModules['uninstalled']['app']),
 			'wxapp_count' => count($uninstallModules['uninstalled']['wxapp'])

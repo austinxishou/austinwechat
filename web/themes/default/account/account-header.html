@@ -27,9 +27,10 @@
 <div class="btn-group we7-btn-group wechat-edit-group">
 	{if $state == ACCOUNT_MANAGE_NAME_FOUNDER || $state == ACCOUNT_MANAGE_NAME_OWNER}
 	<a href="{php echo url('account/post/base', array('uniacid' => $_GPC['uniacid'], 'acid' => $_GPC['acid'], 'account_type' => ACCOUNT_TYPE))}" class="btn btn-default {if $do == 'base'} active{/if}">基础信息</a>
-	{if ACCOUNT_TYPE == ACCOUNT_TYPE_OFFCIAL_NORMAL}
+<!-- austin modify 移除短信信息 服务 -->
+<!-- 	{if ACCOUNT_TYPE == ACCOUNT_TYPE_OFFCIAL_NORMAL}
 	<a href="{php echo url('account/post/sms', array('uniacid' => $_GPC['uniacid'], 'acid' => $_GPC['acid'], 'account_type' => ACCOUNT_TYPE))}" class="btn btn-default {if $do == 'sms'} active{/if}">短信信息</a>
-	{/if}
+	{/if} -->
 	{/if}
 	<a href="{php echo url('account/post-user/edit', array('uniacid' => $_GPC['uniacid'], 'acid' => $_GPC['acid'], 'account_type' => $_GPC['account_type']))}" class="btn btn-default {if $action == 'post-user' && $do == 'edit'} active{/if}">使用者管理</a>
 	{if ACCOUNT_TYPE == ACCOUNT_TYPE_OFFCIAL_NORMAL}

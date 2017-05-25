@@ -1,7 +1,9 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 粉丝模块操作??
  */
 
 
@@ -1527,9 +1529,10 @@ function mc_init_fans_info($openid, $force_init_member = false){
 	if (empty($fans) || is_error($fans)) {
 		return true;
 	}
-		if (empty($fans['subscribe'])) {
-		pdo_update('mc_mapping_fans', array('follow' => 0, 'unfollowtime' => TIMESTAMP), array('fanid' => $openid));
-		return true;
+	
+	if (empty($fans['subscribe'])) {
+	pdo_update('mc_mapping_fans', array('follow' => 0, 'unfollowtime' => TIMESTAMP), array('fanid' => $openid));
+	return true;
 	}
 	$fans_mapping = mc_fansinfo($openid);
 	$fans_update_info = array(

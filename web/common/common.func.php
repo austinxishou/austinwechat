@@ -1,7 +1,9 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 网页端的通用函数
  */
 defined('IN_IA') or exit('Access Denied');
 

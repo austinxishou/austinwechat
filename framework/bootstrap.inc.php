@@ -1,7 +1,9 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 框架初始化,主要包括:config加载,全局设置加载,全局浏览器类型,设备类型等初始化
  */
 define('IN_IA', true);
 define('STARTTIME', microtime());

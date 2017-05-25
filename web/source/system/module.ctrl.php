@@ -21,6 +21,9 @@ if ($_W['role'] != ACCOUNT_MANAGE_NAME_OWNER && $_W['role'] != ACCOUNT_MANAGE_NA
 	message('无权限操作！', referer(), 'error');
 }
 
+load()->func('logging');
+logging_run($do);
+
 if ($do == 'get_upgrade_info') {
 	$module_name = trim($_GPC['name']);
 	$module_info = module_fetch($module_name);
@@ -462,6 +465,7 @@ if ($do == 'uninstall') {
 		message('您没有卸载模块的权限', '', 'error');
 	}
 	$name = trim($_GPC['name']);
+	logging_run($name,"卸载模块验证名称");
 	$module = module_fetch($name);
 	if (empty($module)) {
 		message('模块已经被卸载或是不存在！', '', 'error');
@@ -509,8 +513,15 @@ if ($do == 'uninstall') {
 
 if ($do == 'installed') {
 	$_W['page']['title'] = '应用列表';
+	logging_run("获取已安装模块");
 	$uninstalled_module = module_get_all_unistalled('uninstalled');
-	$total_uninstalled = $uninstalled_module['module_count'];
+	logging_run($uninstalled_module);
+	if( !empty($uninstalled_module)){
+		$total_uninstalled = $uninstalled_module['module_count'];
+	}else{
+		$total_uninstalled = 0;
+	}
+	
 	$pageindex = max($_GPC['page'], 1);
 	$pagesize = 20;
 	$letter = $_GPC['letter'];
@@ -559,7 +570,11 @@ if ($do == 'installed') {
 			}
 		}
 	}
+	// logging_run("查看数据库读取的模块列表");
+	// logging_run($condition);
+	// logging_run($params);
 	$total = pdo_fetchcolumn("SELECT COUNT(*) FROM ". tablename('modules'). $condition, $params);
+	// logging_run($total);
 	$module_list = pdo_fetchall("SELECT * FROM ". tablename('modules'). $condition. " ORDER BY `issystem` DESC, `mid` DESC". " LIMIT ".($pageindex-1)*$pagesize.", ". $pagesize, $params, 'name');
 	$pager = pagination($total, $pageindex, $pagesize);
 	if (!empty($module_list)) {
@@ -590,8 +605,15 @@ if ($do == 'not_installed') {
 	$pagesize = 20;
 
 	$uninstallModules = module_get_all_unistalled($status);
-	$total_uninstalled = $uninstallModules['module_count'];
-	$uninstallModules = $uninstallModules['modules'];
+	if(!empty($uninstallModules)){
+		$total_uninstalled = $uninstallModules['module_count'];
+		$uninstallModules = $uninstallModules['modules'];
+	}else{
+		$total_uninstalled = 0;
+		$uninstallModules = [];
+	}
+	
+	
 	if (!empty($uninstallModules)) {
 		foreach($uninstallModules as $name => &$module) {
 			if (!empty($letter) && strlen($letter) == 1) {
@@ -618,7 +640,10 @@ if ($do == 'not_installed') {
 		}
 	}
 	$total = count($uninstallModules);
-	$uninstallModules = array_slice($uninstallModules, ($pageindex - 1)*$pagesize, $pagesize);
+	//modify austin
+	if($total > 10){
+		$uninstallModules = array_slice($uninstallModules, ($pageindex - 1)*$pagesize, $pagesize);
+	}
 	$pager = pagination($total, $pageindex, $pagesize);
 }
 

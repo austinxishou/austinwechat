@@ -7,11 +7,18 @@ defined('IN_IA') or exit('Access Denied');
 
 
 function cache_read($key) {
+	load()->func('logging');
+	// logging_run("module:cache_read".$key);
 	$cachedata = pdo_getcolumn('core_cache', array('key' => $key), 'value');
 	if (empty($cachedata)) {
 		return '';
 	}
 	$cachedata = iunserializer($cachedata);
+	if( $key == "we7:module:all_uninstall"){
+		logging_run("读取数据为");
+		logging_run($cachedata);
+	}
+	
 	if (is_array($cachedata) && !empty($cachedata['expire']) && !empty($cachedata['data'])) {
 		if ($cachedata['expire'] > TIMESTAMP) {
 			return $cachedata['data'];

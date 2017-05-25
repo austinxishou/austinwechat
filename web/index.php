@@ -12,6 +12,7 @@ load()->web('template');
 if (empty($_W['isfounder']) && !empty($_W['user']) && $_W['user']['status'] == 1) {
 	message('您的账号正在审核或是已经被系统禁止，请联系网站管理员解决！');
 }
+// $acl 作用
 $_W['acl'] = $acl = array(
 	'account' => array(
 		'default' => '',
@@ -117,6 +118,8 @@ $_W['acl'] = $acl = array(
 		),
 	),
 );
+
+//判断站点是否关闭
 if (($_W['setting']['copyright']['status'] == 1) && empty($_W['isfounder']) && $controller != 'cloud' && $controller != 'utility' && $controller != 'account') {
 	$_W['siteclose'] = true;
 	if ($controller == 'account' && $action == 'welcome') {
@@ -134,6 +137,7 @@ if (($_W['setting']['copyright']['status'] == 1) && empty($_W['isfounder']) && $
 	message('站点已关闭，关闭原因：' . $_W['setting']['copyright']['reason'], url('account/welcome'), 'info');
 }
 
+// 加载网页端 路由目录下的所有路由名称
 $controllers = array();
 $handle = opendir(IA_ROOT . '/web/source/');
 if(!empty($handle)) {
@@ -147,11 +151,13 @@ if(!in_array($controller, $controllers)) {
 	$controller = 'home';
 }
 
+//各个路由的初始化操作
 $init = IA_ROOT . "/web/source/{$controller}/__init.php";
 if(is_file($init)) {
 	require $init;
 }
 
+// 加载具体路由下的所有操作的名称
 $actions = array();
 $handle = opendir(IA_ROOT . '/web/source/' . $controller);
 if(!empty($handle)) {
@@ -175,10 +181,12 @@ if(!in_array($action, $actions)) {
 $_W['page'] = array();
 $_W['page']['copyright'] = $_W['setting']['copyright'];
 
+// 路由的重定向操作
 if(is_array($acl[$controller]['direct']) && in_array($action, $acl[$controller]['direct'])) {
 		require _forward($controller, $action);
 	exit;
 }
+// 路由权限判断
 if(is_array($acl[$controller]['founder']) && in_array($action, $acl[$controller]['founder'])) {
 		if(!$_W['isfounder']) {
 		message('不能访问, 需要创始人权限才能访问.');

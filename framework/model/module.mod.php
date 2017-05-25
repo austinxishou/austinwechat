@@ -276,23 +276,34 @@ function module_get_all_unistalled($status)  {
 	load()->model('cloud');
 	load()->classs('cloudapi');
 	$status = $status == 'recycle' ? 'recycle' : 'uninstalled';
+	load()->func('logging');
 	$uninstallModules =  cache_load(cache_system_key('module:all_uninstall'));
-	if ($_GPC['c'] == 'system' && $_GPC['a'] == 'module' && $_GPC['do'] == 'not_installed' && $status == 'uninstalled') {
-		$cloud_api = new CloudApi();
-		$cloud_m_count = $cloud_api->get('site', 'stat', array('module_quantity' => 1), 'json');
-	} else {
-		$cloud_m_count = $uninstallModules['cloud_m_count'];
-	}
-	if (!is_array($uninstallModules['modules']) || $uninstallModules['cloud_m_count'] != $cloud_m_count['module_quantity']) {
+	logging_run("缓存读取到的uninstallModules为");
+	logging_run($uninstallModules);
+	// 获取服务器上未安装模块信息--目前先注释
+	// if ($_GPC['c'] == 'system' && $_GPC['a'] == 'module' && $_GPC['do'] == 'not_installed' && $status == 'uninstalled') {
+	// 	$cloud_api = new CloudApi();
+	// 	$cloud_m_count = $cloud_api->get('site', 'stat', array('module_quantity' => 1), 'json');
+	// } else {
+	// 	$cloud_m_count = $uninstallModules['cloud_m_count'];
+	// }
+
+	// if (!is_array($uninstallModules['modules']) || $uninstallModules['cloud_m_count'] != $cloud_m_count['module_quantity']) {
+	// 	$uninstallModules = cache_build_uninstalled_module();
+	// }
+
+	if (!is_array($uninstallModules['modules']) ) {
 		$uninstallModules = cache_build_uninstalled_module();
 	}
-	if (ACCOUNT_TYPE == ACCOUNT_TYPE_APP_NORMAL) {
+	if (ACCOUNT_TYPE == ACCOUNT_TYPE_APP_NORMAL && !empty($uninstallModules)) {
 		$uninstallModules['modules'] = $uninstallModules['modules'][$status]['wxapp'];
 		$uninstallModules['module_count'] = $uninstallModules['wxapp_count'];
 		return $uninstallModules;
-	} else {
+	} else if(!empty($uninstallModules) ){
 		$uninstallModules['modules'] = $uninstallModules['modules'][$status]['app'];
 		$uninstallModules['module_count'] = $uninstallModules['app_count'];
+		return $uninstallModules;
+	}else{
 		return $uninstallModules;
 	}
 }

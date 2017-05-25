@@ -1,7 +1,9 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 网页端布局配置-顶层导航页设置
  */
 defined('IN_IA') or exit('Access Denied');
 
@@ -120,12 +122,12 @@ $we7_system_menu['account'] = array(
 		),
 	),
 );
-$we7_system_menu['wxapp'] = array(
-	'title' => '小程序',
-	'url' => url('wxapp/display/home'),
-	'section' => array(
-	),
-);
+// $we7_system_menu['wxapp'] = array(
+// 	'title' => '小程序',
+// 	'url' => url('wxapp/display/home'),
+// 	'section' => array(
+// 	),
+// );
 
 $we7_system_menu['system'] = array(
 	'title' => '系统管理',
@@ -392,12 +394,13 @@ $we7_system_menu['system'] = array(
 	),
 );
 
-$we7_system_menu['appmarket'] = array(
-	'title' => '应用市场',
-	'url' => 'http://sep9.cn/dv01d3',
-	'section' => array(),
-	'blank' => true,
-	'founder' => true,
-);
+## 新增顶层导航栏选项入口
+// $we7_system_menu['appmarket'] = array(
+// 	'title' => '应用市场',
+// 	'url' => 'http://sep9.cn/dv01d3',
+// 	'section' => array(),
+// 	'blank' => true,
+// 	'founder' => true,
+// );
 
 return $we7_system_menu;
