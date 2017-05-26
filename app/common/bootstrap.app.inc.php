@@ -1,10 +1,13 @@
 <?php
 /**
  * [WeEngine System] Copyright (c) 2014 WE7.CC
- * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
+ * WeEngine is NOT a free software, it under the license terms, 
+ * visited http://www.we7.cc/ for more details.
+ * 移动端框架初始化
  */
 defined('IN_IA') or exit('Access Denied');
 load()->model('mc');
+load()->func('logging');
 $_W['uniacid'] = intval($_GPC['i']);
 if(empty($_W['uniacid'])) {
 	$_W['uniacid'] = intval($_GPC['weid']);
@@ -37,9 +40,11 @@ if (empty($_W['session_id'])) {
 	setcookie(session_name(), $_W['session_id']);
 }
 session_id($_W['session_id']);
+logging_run($_W['session_id'], "移动端访问对话ID");
 
 load()->classs('wesession');
 WeSession::start($_W['uniacid'], CLIENT_IP);
+
 if (!empty($_GPC['j'])) {
 	$acid = intval($_GPC['j']);
 	$_W['account'] = account_fetch($acid);
@@ -51,6 +56,7 @@ if (!empty($_GPC['j'])) {
 	$_SESSION['__acid'] = $_W['acid'];
 	$_SESSION['__uniacid'] = $_W['uniacid'];
 }
+
 if (!empty($_SESSION['__acid']) && $_SESSION['__uniacid'] == $_W['uniacid']) {
 	$_W['acid'] = intval($_SESSION['__acid']);
 	$_W['account'] = account_fetch($_W['acid']);
@@ -67,6 +73,11 @@ if ((!empty($_SESSION['acid']) && $_W['acid'] != $_SESSION['acid']) ||
 $_SESSION['acid'] = $_W['acid'];
 $_SESSION['uniacid'] = $_W['uniacid'];
 
+//austin modify test only
+if(DEVELOPMENT){
+	$_SESSION['openid'] = "dadfasdfasddasgd121124234";
+}
+
 if (!empty($_SESSION['openid'])) {
 	$_W['openid'] = $_SESSION['openid'];
 	$_W['fans'] = mc_fansinfo($_W['openid']);
@@ -80,6 +91,7 @@ if (!empty($_SESSION['uid']) || (!empty($_W['fans']) && !empty($_W['fans']['uid'
 	_mc_login(array('uid' => $uid));
 	unset($uid);
 }
+
 if (empty($_W['openid']) && !empty($_SESSION['oauth_openid'])) {
 	$_W['openid'] = $_SESSION['oauth_openid'];
 	$_W['fans'] = array(
@@ -88,6 +100,7 @@ if (empty($_W['openid']) && !empty($_SESSION['oauth_openid'])) {
 		'follow' => 0
 	);
 }
+
 $unisetting = uni_setting_load();
 if (!empty($unisetting['oauth']['account'])) {
 	$oauth = account_fetch($unisetting['oauth']['account']);

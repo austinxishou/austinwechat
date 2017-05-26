@@ -30,7 +30,7 @@
 			});
 			{/if}
 
-			{if $_W['uid']}
+			{if $_W['uid'] }
 				function checknotice() {
 					$.post("{php echo url('utility/notice')}", {}, function(data){
 						var data = $.parseJSON(data);

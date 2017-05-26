@@ -10,7 +10,7 @@ define('LOGGING_TRACE', 'trace');
 define('LOGGING_WARNING', 'warning');
 define('LOGGING_INFO', 'info');
 
-function logging_run($log, $info="日志注释", $type = 'trace', $filename = 'run') {
+function logging_run($log, $info="日志注释信息", $type = 'trace', $filename = 'run') {
 	global $_W;
 	$filename = IA_ROOT . '/data/logs/' . $filename . '_' . date('Ymd') . '.log';
 	

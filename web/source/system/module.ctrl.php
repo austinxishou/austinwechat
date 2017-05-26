@@ -236,30 +236,31 @@ if ($do =='install') {
 		message('模块已经安装或是唯一标识已存在！', '', 'error');
 	}
 	$manifest = ext_module_manifest($module_name);
-	if (!empty($manifest)) {
-		$result = cloud_m_prepare($module_name);
-		if (is_error($result)) {
-			message($result['message'], url('system/module/not_installed', array('account_type' => ACCOUNT_TYPE)), 'error');
-		}
-	} else {
-		$result = cloud_prepare();
-		if (is_error($result)) {
-			message($result['message'], url('cloud/profile'), 'error');
-		}
-		$module_info = cloud_m_info($module_name);
-		if (!is_error($module_info)) {
-			if (empty($_GPC['flag'])) {
-				header('location: ' . url('cloud/process', array('account_type' => ACCOUNT_TYPE, 'm' => $module_name)));
-				exit;
-			} else {
-				define('ONLINE_MODULE', true);
-				$packet = cloud_m_build($module_name);
-				$manifest = ext_module_manifest_parse($packet['manifest']);
-			}
-		} else {
-			message($module_info['message'], '', 'error');
-		}
-	}
+	// austin modify 注释掉 服务端验证功能
+	// if (!empty($manifest)) {
+	// 	$result = cloud_m_prepare($module_name);
+	// 	if (is_error($result)) {
+	// 		message($result['message'], url('system/module/not_installed', array('account_type' => ACCOUNT_TYPE)), 'error');
+	// 	}
+	// } else {
+	// 	$result = cloud_prepare();
+	// 	if (is_error($result)) {
+	// 		message($result['message'], url('cloud/profile'), 'error');
+	// 	}
+	// 	$module_info = cloud_m_info($module_name);
+	// 	if (!is_error($module_info)) {
+	// 		if (empty($_GPC['flag'])) {
+	// 			header('location: ' . url('cloud/process', array('account_type' => ACCOUNT_TYPE, 'm' => $module_name)));
+	// 			exit;
+	// 		} else {
+	// 			define('ONLINE_MODULE', true);
+	// 			$packet = cloud_m_build($module_name);
+	// 			$manifest = ext_module_manifest_parse($packet['manifest']);
+	// 		}
+	// 	} else {
+	// 		message($module_info['message'], '', 'error');
+	// 	}
+	// }
 	if (empty($manifest)) {
 		message('模块安装配置文件不存在或是格式不正确，请刷新重试！', url('system/module/not_installed', array('account_type' => ACCOUNT_TYPE)), 'error');
 	}

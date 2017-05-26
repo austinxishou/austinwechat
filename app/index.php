@@ -71,6 +71,7 @@ if ($controller == 'wechat' && $action == 'card' && $do == 'use') {
 	header("location: index.php?i={$_W['uniacid']}&c=entry&m=paycenter&do=consume&encrypt_code={$_GPC['encrypt_code']}&card_id={$_GPC['card_id']}&openid={$_GPC['openid']}&source={$_GPC['source']}");
 	exit;
 }
+
 $controllers = array();
 $handle = opendir(IA_ROOT . '/app/source/');
 if(!empty($handle)) {
@@ -83,6 +84,8 @@ if(!empty($handle)) {
 if(!in_array($controller, $controllers)) {
 	$controller = 'home';
 }
+
+
 $init = IA_ROOT . "/app/source/{$controller}/__init.php";
 if(is_file($init)) {
 	require $init;;
@@ -112,6 +115,9 @@ if(!in_array($action, $actions)) {
 if(!in_array($action, $actions)) {
 	$action = $actions[0];
 }
+logging_run($controller, "路由名称为");
+logging_run($action, "操作名称为");
+logging_run($entry, "entry入口为");
 require _forward($controller, $action);
 
 function _forward($c, $a) {

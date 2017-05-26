@@ -287,13 +287,13 @@ function uni_groups($groupids = array()) {
 	return $list;
 }
 
-
+//设置模板
 function uni_templates() {
 	global $_W;
 	$owneruid = pdo_fetchcolumn("SELECT uid FROM ".tablename('uni_account_users')." WHERE uniacid = :uniacid AND role = 'owner'", array(':uniacid' => $_W['uniacid']));
 	load()->model('user');
 	$owner = user_single(array('uid' => $owneruid));
-		if (empty($owner)) {
+	if (empty($owner)) {
 		$groupid = '-1';
 	} else {
 		$groupid = $owner['groupid'];

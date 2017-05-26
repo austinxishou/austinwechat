@@ -275,11 +275,12 @@ function module_get_all_unistalled($status)  {
 	load()->func('communication');
 	load()->model('cloud');
 	load()->classs('cloudapi');
-	$status = $status == 'recycle' ? 'recycle' : 'uninstalled';
 	load()->func('logging');
-	$uninstallModules =  cache_load(cache_system_key('module:all_uninstall'));
-	logging_run("缓存读取到的uninstallModules为");
-	logging_run($uninstallModules);
+	$status = $status == 'recycle' ? 'recycle' : 'uninstalled';
+
+	//不使用缓存功能,总是从addons目录下读取
+	$uninstallModules = cache_build_uninstalled_module();
+	// $uninstallModules =  cache_load(cache_system_key('module:all_uninstall'));
 	// 获取服务器上未安装模块信息--目前先注释
 	// if ($_GPC['c'] == 'system' && $_GPC['a'] == 'module' && $_GPC['do'] == 'not_installed' && $status == 'uninstalled') {
 	// 	$cloud_api = new CloudApi();
@@ -292,9 +293,9 @@ function module_get_all_unistalled($status)  {
 	// 	$uninstallModules = cache_build_uninstalled_module();
 	// }
 
-	if (!is_array($uninstallModules['modules']) ) {
-		$uninstallModules = cache_build_uninstalled_module();
-	}
+	// if (!is_array($uninstallModules['modules']) ) {
+	// 	$uninstallModules = cache_build_uninstalled_module();
+	// }
 	if (ACCOUNT_TYPE == ACCOUNT_TYPE_APP_NORMAL && !empty($uninstallModules)) {
 		$uninstallModules['modules'] = $uninstallModules['modules'][$status]['wxapp'];
 		$uninstallModules['module_count'] = $uninstallModules['wxapp_count'];
