@@ -45,7 +45,8 @@ if(!empty($_GPC['__uniacid'])) {
 		} else if( !empty($cache_lastaccount) ){
 			$uniacid = $cache_lastaccount['account'];
 		}else{
-			$uniacid = array();
+//			$uniacid = array();
+            $uniacid = $_GPC['uniacid'];
 		}
 	}
 	$_W['uniacid'] = $uniacid;
