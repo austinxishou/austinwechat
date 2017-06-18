@@ -275,29 +275,6 @@ $we7_system_menu['system'] = array(
 				),
 			)
 		),
-		'cloud' => array(
-			'title' => '云服务',
-			'menu' => array(
-				'system_profile' => array(
-					'title' => '系统更新',
-					'url' => url('cloud/upgrade'),
-					'icon' => 'wi wi-update',
-					'permission_name' => 'system_cloud_upgrade',
-				),
-				'system_cloud_register' => array(
-					'title' => '注册站点',
-					'url' => url('cloud/profile'),
-					'icon' => 'wi wi-registersite',
-					'permission_name' => 'system_cloud_register',
-				),
-				'system_cloud_diagnose' => array(
-					'title' => '云服务诊断',
-					'url' => url('cloud/diagnose'),
-					'icon' => 'wi wi-diagnose',
-					'permission_name' => 'system_cloud_diagnose',
-				),
-			)
-		),
 		'acticle' => array(
 			'title' => '文章/公告',
 			'menu' => array(
